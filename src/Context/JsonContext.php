@@ -271,12 +271,7 @@ class JsonContext extends BaseContext
     {
         $json = $this->getJson();
 
-        try {
-            $node = $this->inspector->evaluate($json, $name);
-        } catch (\Exception $e) {
-            throw new \Exception("The node '$name' does not exist.");
-        }
-        return $node;
+        return $this->inspector->evaluate($json, $name);
     }
 
     /**
@@ -286,9 +281,7 @@ class JsonContext extends BaseContext
      */
     public function theJsonNodeShouldNotExist($name)
     {
-        $this->not(function () use ($name) {
-            return $this->theJsonNodeShouldExist($name);
-        }, "The node '$name' exists.");
+        return null === $this->theJsonNodeShouldExist($name);
     }
 
     /**
