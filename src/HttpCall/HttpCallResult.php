@@ -5,9 +5,7 @@ namespace Behatch\HttpCall;
 class HttpCallResult
 {
     public $value {
-        get {
-            return $this->value;
-        }
+        get => $this->value;
     }
 
     public function __construct($value)

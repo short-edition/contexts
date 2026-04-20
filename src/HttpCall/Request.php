@@ -9,7 +9,7 @@ class Request
     /**
      * @var Mink
      */
-    private $mink;
+    private Mink $mink;
     private $client;
 
     /**
@@ -26,15 +26,12 @@ class Request
      * @param mixed $arguments
      * @return mixed
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, mixed $arguments)
     {
         return call_user_func_array([$this->getClient(), $name], $arguments);
     }
 
-    /**
-     * @return Request\BrowserKit
-     */
-    private function getClient()
+    private function getClient(): Request\BrowserKit|Request\Goutte
     {
         if (null === $this->client) {
             if ('symfony2' === $this->mink->getDefaultSessionName()) {

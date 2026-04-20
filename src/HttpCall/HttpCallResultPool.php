@@ -4,13 +4,8 @@ namespace Behatch\HttpCall;
 
 class HttpCallResultPool
 {
-    /**
-     * @var HttpCallResult|null
-     */
-    private ?HttpCallResult $result {
-        get {
-            return $this->result;
-        }
+    public ?HttpCallResult $result {
+        get => $this->result;
     }
 
     /**

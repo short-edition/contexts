@@ -4,7 +4,7 @@ namespace Behatch\HttpCall;
 
 class ContextSupportedVoters implements ContextSupportedVoter
 {
-    private $voters;
+    private array $voters;
 
     public function __construct(array $voters = array())
     {
@@ -13,12 +13,12 @@ class ContextSupportedVoters implements ContextSupportedVoter
         }
     }
 
-    public function register(ContextSupportedVoter $voter)
+    public function register(ContextSupportedVoter $voter): void
     {
         $this->voters[] = $voter;
     }
 
-    public function vote(HttpCallResult $httpCallResult)
+    public function vote(HttpCallResult $httpCallResult): bool
     {
         foreach ($this->voters as $voter) {
             if ($voter->vote($httpCallResult)) {

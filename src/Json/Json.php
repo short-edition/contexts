@@ -7,9 +7,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 class Json
 {
     protected mixed $content {
-        get {
-            return $this->content;
-        }
+        get => $this->content;
     }
 
     /**

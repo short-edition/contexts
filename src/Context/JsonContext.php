@@ -13,9 +13,9 @@ use Behatch\HttpCall\HttpCallResultPool;
 
 class JsonContext extends BaseContext
 {
-    protected $inspector;
+    protected JsonInspector $inspector;
 
-    protected $httpCallResultPool;
+    protected HttpCallResultPool $httpCallResultPool;
 
     public function __construct(HttpCallResultPool $httpCallResultPool, $evaluationMode = 'javascript')
     {
@@ -367,7 +367,7 @@ class JsonContext extends BaseContext
 
     protected function getJson()
     {
-        return new Json($this->httpCallResultPool);
+        return new Json($this->httpCallResultPool->result->value);
     }
 
     private function checkSchemaFile($filename)

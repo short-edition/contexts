@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class BrowserKit
 {
-    protected $mink;
+    protected Mink $mink;
 
     public function __construct(Mink $mink)
     {
@@ -52,12 +52,12 @@ class BrowserKit
         return $request;
     }
 
-    public function getContent()
+    public function getContent(): string
     {
         return $this->mink->getSession()->getPage()->getContent();
     }
 
-    public function send($method, $url, $parameters = [], $files = [], $content = null, $headers = [])
+    public function send($method, $url, $parameters = [], $files = [], $content = null, $headers = []): \Behat\Mink\Element\DocumentElement
     {
         foreach ($files as $originalName => &$file) {
             if (is_string($file)) {
@@ -75,7 +75,7 @@ class BrowserKit
         return $this->mink->getSession()->getPage();
     }
 
-    public function setHttpHeader($name, $value)
+    public function setHttpHeader($name, $value): void
     {
         $client = $this->mink->getSession()->getDriver()->getClient();
         // Goutte\Client
@@ -98,7 +98,7 @@ class BrowserKit
         }
     }
 
-    public function getHttpHeaders()
+    public function getHttpHeaders(): array
     {
         return array_change_key_case(
             $this->mink->getSession()->getResponseHeaders(),
@@ -106,7 +106,7 @@ class BrowserKit
         );
     }
 
-    public function getHttpHeader($name)
+    public function getHttpHeader($name): string
     {
         $values = $this->getHttpRawHeader($name);
 
@@ -131,7 +131,7 @@ class BrowserKit
         return $value;
     }
 
-    protected function resetHttpHeaders()
+    protected function resetHttpHeaders(): void
     {
         /** @var GoutteClient|BrowserKitClient $client */
         $client = $this->mink->getSession()->getDriver()->getClient();
