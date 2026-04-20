@@ -6,16 +6,18 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class Json
 {
-    protected $content;
+    protected mixed $content {
+        get {
+            return $this->content;
+        }
+    }
 
+    /**
+     * @throws \Exception
+     */
     public function __construct($content)
     {
         $this->content = $this->decode((string) $content);
-    }
-
-    public function getContent()
-    {
-        return $this->content;
     }
 
     public function read($expression, PropertyAccessor $accessor)
@@ -34,7 +36,7 @@ class Json
         return $accessor->getValue($this->content, $expression);
     }
 
-    public function encode($pretty = true)
+    public function encode($pretty = true): false|string
     {
         $flags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
 
@@ -50,6 +52,9 @@ class Json
         return $this->encode(false);
     }
 
+    /**
+     * @throws \Exception
+     */
     private function decode($content)
     {
         $result = json_decode($content);

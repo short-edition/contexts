@@ -10,11 +10,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class HttpCallListener implements EventSubscriberInterface
 {
-    private $contextSupportedVoter;
+    private ContextSupportedVoter $contextSupportedVoter;
 
-    private $httpCallResultPool;
+    private HttpCallResultPool $httpCallResultPool;
 
-    private $mink;
+    private Mink $mink;
 
     public function __construct(ContextSupportedVoter $contextSupportedVoter, HttpCallResultPool $httpCallResultPool, Mink $mink)
     {

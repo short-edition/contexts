@@ -6,7 +6,7 @@ use Behat\Behat\Context\Argument\ArgumentResolver;
 
 class HttpCallResultPoolResolver implements ArgumentResolver
 {
-    private $dependencies;
+    private array $dependencies;
 
     public function __construct(/* ... */)
     {
@@ -17,7 +17,7 @@ class HttpCallResultPoolResolver implements ArgumentResolver
         }
     }
 
-    public function resolveArguments(\ReflectionClass $classReflection, array $arguments)
+    public function resolveArguments(\ReflectionClass $classReflection, array $arguments): array
     {
         $constructor = $classReflection->getConstructor();
         if ($constructor !== null) {

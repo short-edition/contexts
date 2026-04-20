@@ -16,7 +16,9 @@ class TableContext extends BaseContext
         $columnsSelector = "$table thead tr th";
         $columns = $this->getSession()->getPage()->findAll('css', $columnsSelector);
 
-        $this->iShouldSeeColumnsInTheTable(count($text->getHash()), $table);
+        $text->getHash()
+            |> count(...)
+            |> (fn($x) => $this->iShouldSeeColumnsInTheTable($x, $table));
 
         foreach ($text->getHash() as $key => $column) {
             $this->assertEquals($column['columns'], $columns[$key]->getText());
@@ -83,6 +85,7 @@ class TableContext extends BaseContext
 
     /**
      * Checks that the specified cell (column/row) of the table's body contains the specified text
+     * @throws \Exception
      */
     #[Then('the :colIndex column of the :rowIndex row in the :table table should contain :text')]
     public function theStColumnOfTheStRowInTheTableShouldContain($colIndex, $rowIndex, $table, $text)

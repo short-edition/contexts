@@ -367,7 +367,7 @@ class JsonContext extends BaseContext
 
     protected function getJson()
     {
-        return new Json($this->httpCallResultPool->getResult()->getValue());
+        return new Json($this->httpCallResultPool);
     }
 
     private function checkSchemaFile($filename)
