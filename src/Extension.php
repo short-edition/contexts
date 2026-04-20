@@ -38,7 +38,7 @@ class Extension implements ExtensionInterface
         $this->loadHttpCallListener($container);
     }
 
-    public function configure(ArrayNodeDefinition $builder)
+    public function configure(ArrayNodeDefinition $builder): void
     {
     }
 
