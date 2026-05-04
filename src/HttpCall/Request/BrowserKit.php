@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Behatch\HttpCall\Request;
 
-use Behat\Mink\Driver\Goutte\Client as GoutteClient;
 use Behat\Mink\Mink;
-use Symfony\Component\BrowserKit\Client as BrowserKitClient;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class BrowserKit
@@ -49,6 +49,7 @@ class BrowserKit
         } else {
             $request = $client->getRequest();
         }
+
         return $request;
     }
 
@@ -60,7 +61,7 @@ class BrowserKit
     public function send($method, $url, $parameters = [], $files = [], $content = null, $headers = []): \Behat\Mink\Element\DocumentElement
     {
         foreach ($files as $originalName => &$file) {
-            if (is_string($file)) {
+            if (\is_string($file)) {
                 $file = new UploadedFile($file, $originalName);
             }
         }
@@ -78,32 +79,22 @@ class BrowserKit
     public function setHttpHeader($name, $value): void
     {
         $client = $this->mink->getSession()->getDriver()->getClient();
-        // Goutte\Client
-        if (method_exists($client, 'setHeader')) {
-            $client->setHeader($name, $value);
-        } else {
-            // Symfony\Component\BrowserKit\Client
 
-            /* taken from Behat\Mink\Driver\BrowserKitDriver::setRequestHeader */
-            $contentHeaders = ['CONTENT_LENGTH' => true, 'CONTENT_MD5' => true, 'CONTENT_TYPE' => true];
-            $name = str_replace('-', '_', strtoupper($name));
+        /* taken from Behat\Mink\Driver\BrowserKitDriver::setRequestHeader */
+        $contentHeaders = ['CONTENT_LENGTH' => true, 'CONTENT_MD5' => true, 'CONTENT_TYPE' => true];
+        $name = str_replace('-', '_', strtoupper($name));
 
-            // CONTENT_* are not prefixed with HTTP_ in PHP when building $_SERVER
-            if (!isset($contentHeaders[$name])) {
-                $name = 'HTTP_' . $name;
-            }
-            /* taken from Behat\Mink\Driver\BrowserKitDriver::setRequestHeader */
-
-            $client->setServerParameter($name, $value);
+        // CONTENT_* are not prefixed with HTTP_ in PHP when building $_SERVER
+        if (!isset($contentHeaders[$name])) {
+            $name = 'HTTP_'.$name;
         }
+        /* taken from Behat\Mink\Driver\BrowserKitDriver::setRequestHeader */
+        $client->setServerParameter($name, $value);
     }
 
     public function getHttpHeaders(): array
     {
-        return array_change_key_case(
-            $this->mink->getSession()->getResponseHeaders(),
-            CASE_LOWER
-        );
+        return array_change_key_case($this->mink->getSession()->getResponseHeaders());
     }
 
     public function getHttpHeader($name): string
@@ -120,25 +111,19 @@ class BrowserKit
 
         if (isset($headers[$name])) {
             $value = $headers[$name];
-            if (!is_array($headers[$name])) {
+            if (!\is_array($headers[$name])) {
                 $value = [$headers[$name]];
             }
         } else {
-            throw new \OutOfBoundsException(
-                "The header '$name' doesn't exist"
-            );
+            throw new \OutOfBoundsException("The header '$name' doesn't exist");
         }
+
         return $value;
     }
 
     protected function resetHttpHeaders(): void
     {
-        /** @var GoutteClient|BrowserKitClient $client */
         $client = $this->mink->getSession()->getDriver()->getClient();
-
         $client->setServerParameters([]);
-        if ($client instanceof GoutteClient) {
-            $client->restart();
-        }
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Behatch\HttpCall;
 
 class HttpCallResult
@@ -17,5 +19,4 @@ class HttpCallResult
     {
         $this->value = $value;
     }
-
 }

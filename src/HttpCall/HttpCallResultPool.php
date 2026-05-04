@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Behatch\HttpCall;
 
 class HttpCallResultPool
@@ -8,12 +10,8 @@ class HttpCallResultPool
         get => $this->result;
     }
 
-    /**
-     * @param HttpCallResult $result
-     */
     public function store(HttpCallResult $result): void
     {
         $this->result = $result;
     }
-
 }

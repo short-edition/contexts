@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Behatch;
 
-use Symfony\Component\Config\FileLocator;
+use Behat\Behat\Context\ServiceContainer\ContextExtension;
+use Behat\Testwork\ServiceContainer\Extension as ExtensionInterface;
+use Behat\Testwork\ServiceContainer\ExtensionManager;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Behat\Behat\Context\ServiceContainer\ContextExtension;
-use Behat\Testwork\ServiceContainer\ExtensionManager;
-use Behat\Testwork\ServiceContainer\Extension as ExtensionInterface;
 
 class Extension implements ExtensionInterface
 {
@@ -51,7 +53,7 @@ class Extension implements ExtensionInterface
 
     private function loadHttpCallListener(ContainerBuilder $container): void
     {
-        $processor = new \Behat\Testwork\ServiceContainer\ServiceProcessor;
+        $processor = new \Behat\Testwork\ServiceContainer\ServiceProcessor();
         $references = $processor->findAndSortTaggedServices($container, 'behatch.context_voter');
         $definition = $container->getDefinition('behatch.context_supported.voter');
 

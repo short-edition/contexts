@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Behatch\HttpCall;
 
-use Behat\Behat\EventDispatcher\Event\StepTested;
 use Behat\Behat\EventDispatcher\Event\AfterStepTested;
+use Behat\Behat\EventDispatcher\Event\StepTested;
 use Behat\Behat\Tester\Result\ExecutedStepResult;
 use Behat\Mink\Mink;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -26,7 +28,7 @@ class HttpCallListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-           StepTested::AFTER => 'afterStep'
+            StepTested::AFTER => 'afterStep',
         ];
     }
 
@@ -35,7 +37,7 @@ class HttpCallListener implements EventSubscriberInterface
         $testResult = $event->getTestResult();
 
         if (!$testResult instanceof ExecutedStepResult) {
-            return;
+            return false;
         }
 
         $httpCallResult = new HttpCallResult(
@@ -54,10 +56,12 @@ class HttpCallListener implements EventSubscriberInterface
             $this->httpCallResultPool->store(
                 new HttpCallResult($this->mink->getSession()->getPage()->getContent())
             );
-        } catch (\LogicException $e) {
+        } catch (\LogicException) {
             // Mink has no response
-        } catch (\Behat\Mink\Exception\DriverException $e) {
+        } catch (\Behat\Mink\Exception\DriverException) {
             // No Mink
         }
+
+        return false;
     }
 }

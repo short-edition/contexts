@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Behatch\Json;
 
 use JsonSchema\SchemaStorage;
@@ -36,9 +38,9 @@ class JsonSchema extends Json
         $validator->validate($content, $this->content);
 
         if (!$validator->isValid()) {
-            $msg = "JSON does not validate. Violations:".PHP_EOL;
+            $msg = 'JSON does not validate. Violations:'.PHP_EOL;
             foreach ($validator->getErrors() as $error) {
-                $msg .= sprintf("  - [%s] %s".PHP_EOL, $error['property'], $error['message']);
+                $msg .= \sprintf('  - [%s] %s'.PHP_EOL, $error['property'], $error['message']);
             }
             throw new \Exception($msg);
         }

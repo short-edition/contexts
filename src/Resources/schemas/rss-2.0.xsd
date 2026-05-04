@@ -43,12 +43,12 @@ The terms "reproduce," "reproduction," "derivative works," and "distribution" ha
            version="2.0.2.16">
   <xs:annotation>
     <xs:documentation>XML Schema for RSS v2.0 feed files.</xs:documentation>
-    <xs:documentation>Project home: http://www.codeplex.com/rss2schema/ </xs:documentation>
-    <xs:documentation>Based on the RSS 2.0 specification document at http://cyber.law.harvard.edu/rss/rss.html </xs:documentation>
+    <xs:documentation>Project home: https://www.codeplex.com/rss2schema/</xs:documentation>
+    <xs:documentation>Based on the RSS 2.0 specification document at https://cyber.law.harvard.edu/rss/rss.html</xs:documentation>
     <xs:documentation>Author: Jorgen Thelin</xs:documentation>
     <xs:documentation>Revision: 16</xs:documentation>
     <xs:documentation>Date: 01-Nov-2008</xs:documentation>
-    <xs:documentation>Feedback to: http://www.codeplex.com/rss2schema/WorkItem/List.aspx </xs:documentation>
+    <xs:documentation>Feedback to: https://www.codeplex.com/rss2schema/WorkItem/List.aspx</xs:documentation>
   </xs:annotation>
   <xs:element name="rss">
     <xs:complexType>
@@ -384,7 +384,7 @@ The terms "reproduce," "reproduction," "derivative works," and "distribution" ha
   </xs:complexType>
   <xs:simpleType name="EmailAddress">
     <xs:annotation>
-      <xs:documentation>Using the regexp definiton of E-Mail Address by Lucadean from the .NET RegExp Pattern Repository at http://www.3leaf.com/default/NetRegExpRepository.aspx </xs:documentation>
+      <xs:documentation>Using the regexp definiton of E-Mail Address by Lucadean from the .NET RegExp Pattern Repository at https://www.3leaf.com/default/NetRegExpRepository.aspx</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
       <xs:pattern value="([a-zA-Z0-9_\-])([a-zA-Z0-9_\-\.]*)@(\[((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\.){3}|((([a-zA-Z0-9\-]+)\.)+))([a-zA-Z]{2,}|(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\])"/>
@@ -393,7 +393,7 @@ The terms "reproduce," "reproduction," "derivative works," and "distribution" ha
   <xs:simpleType name="Rfc822FormatDate">
     <xs:annotation>
       <xs:documentation>A date-time displayed in RFC-822 format.</xs:documentation>
-      <xs:documentation>Using the regexp definiton of rfc-822 date by Sam Ruby at http://www.intertwingly.net/blog/1360.html </xs:documentation>
+      <xs:documentation>Using the regexp definiton of rfc-822 date by Sam Ruby at https://www.intertwingly.net/blog/1360.html</xs:documentation>
     </xs:annotation>
     <xs:restriction base="xs:string">
       <xs:pattern value="(((Mon)|(Tue)|(Wed)|(Thu)|(Fri)|(Sat)|(Sun)), *)?\d\d? +((Jan)|(Feb)|(Mar)|(Apr)|(May)|(Jun)|(Jul)|(Aug)|(Sep)|(Oct)|(Nov)|(Dec)) +\d\d(\d\d)? +\d\d:\d\d(:\d\d)? +(([+\-]?\d\d\d\d)|(UT)|(GMT)|(EST)|(EDT)|(CST)|(CDT)|(MST)|(MDT)|(PST)|(PDT)|\w)"/>

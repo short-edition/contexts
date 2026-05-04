@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Behatch\Context;
 
-use Behat\Gherkin\Node\StepNode;
 use Behat\Behat\Hook\Scope\AfterStepScope;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\Gherkin\Node\StepNode;
 use Behat\Hook\AfterStep;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Step\Then;
 use Behat\Step\When;
 
@@ -25,28 +27,27 @@ class DebugContext extends BaseContext
      * Pauses the scenario until the user presses a key. Useful when debugging a scenario.
      */
     #[Then('(I )put a breakpoint')]
-    public function iPutABreakpoint()
+    public function iPutABreakpoint(): void
     {
         fwrite(STDOUT, "\033[s    \033[93m[Breakpoint] Press \033[1;93m[RETURN]\033[0;93m to continue...\033[0m");
-        while (fgets(STDIN, 1024) == '') {
+        while ('' === fgets(STDIN, 1024)) {
+            // pause
         }
         fwrite(STDOUT, "\033[u");
-
-        return;
     }
 
     /**
-     * Saving a screenshot
+     * Saving a screenshot.
      */
     #[When('I save a screenshot in :filename')]
-    public function iSaveAScreenshotIn($filename)
+    public function iSaveAScreenshotIn($filename): void
     {
         sleep(1);
         $this->saveScreenshot($filename, $this->screenshotDir);
     }
 
     #[AfterStep]
-    public function failScreenshots(AfterStepScope $scope)
+    public function failScreenshots(AfterStepScope $scope): void
     {
         if ($scope->getTestResult()->isPassed()) {
             return;
@@ -54,21 +55,21 @@ class DebugContext extends BaseContext
 
         $this->displayProfilerLink();
 
-        $suiteName      = urlencode(str_replace(' ', '_', $scope->getSuite()->getName()));
-        $featureName    = urlencode(str_replace(' ', '_', $scope->getFeature()->getTitle()));
+        $suiteName = urlencode(str_replace(' ', '_', $scope->getSuite()->getName()));
+        $featureName = urlencode(str_replace(' ', '_', $scope->getFeature()->getTitle()));
 
         if ($this->getBackground($scope)) {
-            $scenarioName   = 'background';
+            $scenarioName = 'background';
         } else {
-            $scenario       = $this->getScenario($scope);
-            $scenarioName   = urlencode(str_replace(' ', '_', $scenario->getTitle()));
+            $scenario = $this->getScenario($scope);
+            $scenarioName = urlencode(str_replace(' ', '_', $scenario->getTitle()));
         }
 
-        $filename = sprintf('fail_%s_%s_%s_%s.png', time(), $suiteName, $featureName, $scenarioName);
+        $filename = \sprintf('fail_%s_%s_%s_%s.png', time(), $suiteName, $featureName, $scenarioName);
         $this->saveScreenshot($filename, $this->screenshotDir);
     }
 
-    private function displayProfilerLink()
+    private function displayProfilerLink(): void
     {
         try {
             $headers = $this->getMink()->getSession()->getResponseHeaders();
@@ -79,7 +80,6 @@ class DebugContext extends BaseContext
     }
 
     /**
-     * @param AfterStepScope $scope
      * @return \Behat\Gherkin\Node\ScenarioInterface
      */
     private function getScenario(AfterStepScope $scope)
@@ -87,12 +87,10 @@ class DebugContext extends BaseContext
         $scenarios = $scope->getFeature()->getScenarios();
         foreach ($scenarios as $scenario) {
             $stepLinesInScenario = array_map(
-                function (StepNode $step) {
-                    return $step->getLine();
-                },
+                static fn (StepNode $step) => $step->getLine(),
                 $scenario->getSteps()
             );
-            if (in_array($scope->getStep()->getLine(), $stepLinesInScenario)) {
+            if (\in_array($scope->getStep()->getLine(), $stepLinesInScenario, true)) {
                 return $scenario;
             }
         }
@@ -101,29 +99,26 @@ class DebugContext extends BaseContext
     }
 
     /**
-     * @param AfterStepScope $scope
      * @return \Behat\Gherkin\Node\BackgroundNode|bool
      */
     private function getBackground(AfterStepScope $scope)
     {
         $background = $scope->getFeature()->getBackground();
-        if(!$background){
+        if (!$background) {
             return false;
         }
         $stepLinesInBackground = array_map(
-            function (StepNode $step) {
-                return $step->getLine();
-            },
+            static fn (StepNode $step) => $step->getLine(),
             $background->getSteps()
         );
-        if (in_array($scope->getStep()->getLine(), $stepLinesInBackground)) {
+        if (\in_array($scope->getStep()->getLine(), $stepLinesInBackground, true)) {
             return $background;
         }
 
         return false;
     }
 
-    public function saveScreenshot($filename = null, $filepath = null)
+    public function saveScreenshot($filename = null, $filepath = null): void
     {
         try {
             parent::saveScreenshot($filename, $filepath);

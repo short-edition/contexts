@@ -3,7 +3,7 @@
 	<xs:annotation>
 		<xs:documentation>
 				This version of the Atom schema is based on version 1.0 of the format specifications,
-				found here http://www.atomenabled.org/developers/syndication/atom-format-spec.php.
+				found here https://www.atomenabled.org/developers/syndication/atom-format-spec.php.
 			</xs:documentation>
 	</xs:annotation>
 	<!--
@@ -123,7 +123,7 @@
 	<xs:complexType name="categoryType">
 		<xs:annotation>
 			<xs:documentation>
-				The Atom cagegory construct is defined in section 4.2.2 of the format spec.
+				The Atom category construct is defined in section 4.2.2 of the format spec.
 			</xs:documentation>
 		</xs:annotation>
 		<xs:attribute name="term" type="xs:string" use="required"/>

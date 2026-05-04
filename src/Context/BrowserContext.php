@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Behatch\Context;
 
-use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Exception\ExpectationException;
-use Behat\Mink\Exception\ResponseTextException;
-use Behat\Mink\Exception\ElementNotFoundException;
-use WebDriver\Exception\StaleElementReference;
 use Behat\Behat\Tester\Exception\PendingException;
+use Behat\Gherkin\Node\TableNode;
 use Behat\Hook\AfterScenario;
 use Behat\Hook\BeforeScenario;
+use Behat\Mink\Exception\ElementNotFoundException;
+use Behat\Mink\Exception\ExpectationException;
+use Behat\Mink\Exception\ResponseTextException;
 use Behat\Step\Given;
 use Behat\Step\Then;
 use Behat\Step\When;
+use WebDriver\Exception\StaleElementReference;
 
 class BrowserContext extends BaseContext
 {
@@ -39,7 +41,7 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * Set login / password for next HTTP authentication
+     * Set login / password for next HTTP authentication.
      */
     #[When('I set basic authentication with :user and :password')]
     public function iSetBasicAuthenticationWithAnd($user, $password): void
@@ -48,22 +50,22 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * Open url with various parameters
+     * Open url with various parameters.
      */
     #[Given('(I )am on url composed by:')]
-    public function iAmOnUrlComposedBy(TableNode $tableNode): null
+    public function iAmOnUrlComposedBy(TableNode $tableNode): void
     {
         $url = '';
         foreach ($tableNode->getHash() as $hash) {
             $url .= $hash['parameters'];
         }
 
-        return $this->getMinkContext()
-            ->visit($url);
+        $this->getMinkContext()->visit($url);
     }
 
     /**
-     * Clicks on the nth CSS element
+     * Clicks on the nth CSS element.
+     *
      * @throws \Exception
      */
     #[When('(I )click on the :index :element element')]
@@ -74,7 +76,8 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * Click on the nth specified link
+     * Click on the nth specified link.
+     *
      * @throws \Exception
      */
     #[When('(I )follow the :index :link link')]
@@ -85,7 +88,8 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * Presses the nth specified button
+     * Presses the nth specified button.
+     *
      * @throws \Exception
      */
     #[When('(I )press the :index :button button')]
@@ -96,50 +100,52 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * Fills in form field with current date
+     * Fills in form field with current date.
      */
     #[When('(I )fill in :field with the current date')]
-    public function iFillInWithTheCurrentDate($field): null
+    public function iFillInWithTheCurrentDate($field): void
     {
-        return $this->iFillInWithTheCurrentDateAndModifier($field, 'now');
+        $this->iFillInWithTheCurrentDateAndModifier($field, 'now');
     }
 
     /**
-     * Fills in form field with current date and strtotime modifier
+     * Fills in form field with current date and strtotime modifier.
      */
     #[When('(I )fill in :field with the current date and modifier :modifier')]
     public function iFillInWithTheCurrentDateAndModifier($field, $modifier): void
     {
         $modifier
             |> strtotime(...)
-            |> (fn($x) => date($this->dateFormat, $x))
-            |> (fn($x) => $this->getMinkContext()->fillField($field, $x));
+            |> (fn ($x) => date($this->dateFormat, $x))
+            |> (fn ($x) => $this->getMinkContext()->fillField($field, $x));
     }
 
     /**
-     * Mouse over a CSS element
+     * Mouse over a CSS element.
+     *
      * @throws \Exception
      */
     #[When('(I )hover :element')]
     public function iHoverIShouldSeeIn($element): void
     {
         $node = $this->getSession()->getPage()->find('css', $element);
-        if ($node === null) {
+        if (null === $node) {
             throw new \Exception("The hovered element '$element' was not found anywhere in the page");
         }
         $node->mouseOver();
     }
 
     /**
-     * Save value of the field in parameters array
+     * Save value of the field in parameters array.
+     *
      * @throws \Exception
      */
     #[When('(I )save the value of :field in the :parameter parameter')]
     public function iSaveTheValueOfInTheParameter($field, $parameter): void
     {
         $field = str_replace('\\"', '"', $field);
-        $node  = $this->getSession()->getPage()->findField($field);
-        if ($node === null) {
+        $node = $this->getSession()->getPage()->findField($field);
+        if (null === $node) {
             throw new \Exception("The field '$field' was not found anywhere in the page");
         }
 
@@ -147,7 +153,7 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * Checks, that the page should contains specified text after given timeout
+     * Checks, that the page should contains specified text after given timeout.
      */
     #[Then('(I )wait :count second(s) until I see :text')]
     public function iWaitSecondsUntilISee($count, $text): void
@@ -156,7 +162,7 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * Checks, that the page should not contain specified text before given timeout
+     * Checks, that the page should not contain specified text before given timeout.
      */
     #[Then('(I )should not see :text within :count second(s)')]
     public function iDontSeeInSeconds($count, $text): void
@@ -164,8 +170,7 @@ class BrowserContext extends BaseContext
         $caught = false;
         try {
             $this->iWaitSecondsUntilISee($count, $text);
-        }
-        catch (ExpectationException $e) {
+        } catch (ExpectationException $e) {
             $caught = true;
         }
 
@@ -173,7 +178,7 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * Checks, that the page should contains specified text after timeout
+     * Checks, that the page should contains specified text after timeout.
      */
     #[Then('(I )wait until I see :text')]
     public function iWaitUntilISee($text): void
@@ -182,7 +187,8 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * Checks, that the element contains specified text after timeout
+     * Checks, that the element contains specified text after timeout.
+     *
      * @throws ResponseTextException
      */
     #[Then('(I )wait :count second(s) until I see :text in the :element element')]
@@ -200,15 +206,14 @@ class BrowserContext extends BaseContext
                 usleep(1000);
                 $node = $this->getSession()->getPage()->find('css', $element);
                 $this->assertContains($expected, $node->getText(), $message);
+
                 return;
-            }
-            catch (ExpectationException $e) {
+            } catch (ExpectationException $e) {
                 /* Intentionally leave blank */
-            }
-            catch (StaleElementReference $e) {
+            } catch (StaleElementReference $e) {
                 // assume page reloaded whilst we were still waiting
             }
-        } while (!$found && (time() - $startTime < $count));
+        } while (time() - $startTime < $count);
 
         // final assertion...
         $node = $this->getSession()->getPage()->find('css', $element);
@@ -222,7 +227,7 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * Checks, that the element contains specified text after timeout
+     * Checks, that the element contains specified text after timeout.
      */
     #[Then('(I )wait until I see :text in the :element element')]
     public function iWaitUntilISeeInTheElement($text, $element): void
@@ -231,7 +236,8 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * Checks, that the page should contains specified element after timeout
+     * Checks, that the page should contains specified element after timeout.
+     *
      * @throws ResponseTextException
      */
     #[Then('(I )wait for :element element')]
@@ -241,7 +247,8 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * Wait for a element
+     * Wait for a element.
+     *
      * @throws ResponseTextException
      */
     #[Then('(I )wait :count second(s) for :element element')]
@@ -257,14 +264,12 @@ class BrowserContext extends BaseContext
                 $node = $this->getSession()->getPage()->findAll('css', $element);
                 $this->assertCount(1, $node);
                 $found = true;
-            }
-            catch (ExpectationException $e) {
+            } catch (ExpectationException $e) {
                 /* Intentionally leave blank */
             }
-        }
-        while (!$found && (time() - $startTime < $count));
+        } while (!$found && (time() - $startTime < $count));
 
-        if ($found === false) {
+        if (false === $found) {
             $message = "The element '$element' was not found after a $count seconds timeout";
             throw new ResponseTextException($message, $this->getSession()->getDriver(), $e);
         }
@@ -307,7 +312,8 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * Checks, that element with given CSS is enabled
+     * Checks, that element with given CSS is enabled.
+     *
      * @throws \Exception
      * @throws \Exception
      */
@@ -315,7 +321,7 @@ class BrowserContext extends BaseContext
     public function theElementShouldBeEnabled($element): void
     {
         $node = $this->getSession()->getPage()->find('css', $element);
-        if ($node === null) {
+        if (null === $node) {
             throw new \Exception("There is no '$element' element");
         }
 
@@ -325,19 +331,21 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * Checks, that element with given CSS is disabled
+     * Checks, that element with given CSS is disabled.
+     *
      * @throws ExpectationException
      */
     #[Then('the element :element should be disabled')]
     public function theElementShouldBeDisabled($element): void
     {
-        $this->not(function () use($element) {
+        $this->not(function () use ($element): void {
             $this->theElementShouldBeEnabled($element);
         }, "The element '$element' is not disabled");
     }
 
     /**
-     * Checks, that given select box contains the specified option
+     * Checks, that given select box contains the specified option.
+     *
      * @throws ElementNotFoundException
      */
     #[Then('the :select select box should contain :option')]
@@ -347,10 +355,8 @@ class BrowserContext extends BaseContext
         $option = str_replace('\\"', '"', $option);
 
         $obj = $this->getSession()->getPage()->findField($select);
-        if ($obj === null) {
-            throw new ElementNotFoundException(
-                $this->getSession()->getDriver(), 'select box', 'id|name|label|value', $select
-            );
+        if (null === $obj) {
+            throw new ElementNotFoundException($this->getSession()->getDriver(), 'select box', 'id|name|label|value', $select);
         }
         $optionText = $obj->getText();
 
@@ -359,36 +365,38 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * Checks, that given select box does not contain the specified option
+     * Checks, that given select box does not contain the specified option.
+     *
      * @throws ExpectationException
      */
     #[Then('the :select select box should not contain :option')]
     public function theSelectBoxShouldNotContain($select, $option): void
     {
-        $this->not(function () use($select, $option) {
+        $this->not(function () use ($select, $option): void {
             $this->theSelectBoxShouldContain($select, $option);
         }, "The '$select' select box does contain the '$option' option");
     }
 
     /**
-     * Checks, that the specified CSS element is visible
+     * Checks, that the specified CSS element is visible.
+     *
      * @throws \Exception
      */
     #[Then('the :element element should be visible')]
     public function theElementShouldBeVisible($element): void
     {
         $displayedNode = $this->getSession()->getPage()->find('css', $element);
-        if ($displayedNode === null) {
+        if (null === $displayedNode) {
             throw new \Exception("The element '$element' was not found anywhere in the page");
         }
-
 
         $message = "The element '$element' is not visible";
         $this->assertTrue($displayedNode->isVisible(), $message);
     }
 
     /**
-     * Checks, that the specified CSS element is not visible
+     * Checks, that the specified CSS element is not visible.
+     *
      * @throws ExpectationException
      */
     #[Then('the :element element should not be visible')]
@@ -396,7 +404,7 @@ class BrowserContext extends BaseContext
     {
         $exception = new \Exception("The element '$element' is visible");
 
-        $this->not(function () use($element) {
+        $this->not(function () use ($element): void {
             $this->theElementShouldBeVisible($element);
         }, $exception);
     }
@@ -421,7 +429,7 @@ class BrowserContext extends BaseContext
     }
 
     /**
-     * test time from when the scenario started
+     * test time from when the scenario started.
      */
     #[Then('(the )total elapsed time should be :comparison than :expected seconds')]
     #[Then('(the )total elapsed time should be :comparison to :expected seconds')]

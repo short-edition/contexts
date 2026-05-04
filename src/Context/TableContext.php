@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Behatch\Context;
 
 use Behat\Gherkin\Node\TableNode;
@@ -8,17 +10,17 @@ use Behat\Step\Then;
 class TableContext extends BaseContext
 {
     /**
-     * Checks that the specified table's columns match the given schema
+     * Checks that the specified table's columns match the given schema.
      */
     #[Then('the columns schema of the :table table should match:')]
-    public function theColumnsSchemaShouldMatch($table, TableNode $text)
+    public function theColumnsSchemaShouldMatch($table, TableNode $text): void
     {
         $columnsSelector = "$table thead tr th";
         $columns = $this->getSession()->getPage()->findAll('css', $columnsSelector);
 
         $text->getHash()
             |> count(...)
-            |> (fn($x) => $this->iShouldSeeColumnsInTheTable($x, $table));
+            |> (fn ($x) => $this->iShouldSeeColumnsInTheTable($x, $table));
 
         foreach ($text->getHash() as $key => $column) {
             $this->assertEquals($column['columns'], $columns[$key]->getText());
@@ -26,41 +28,41 @@ class TableContext extends BaseContext
     }
 
     /**
-     * Checks that the specified table contains the given number of columns
+     * Checks that the specified table contains the given number of columns.
      */
     #[Then('(I )should see :count column(s) in the :table table')]
-    public function iShouldSeeColumnsInTheTable($count, $table)
+    public function iShouldSeeColumnsInTheTable($count, $table): void
     {
         $columnsSelector = "$table thead tr th";
         $columns = $this->getSession()->getPage()->findAll('css', $columnsSelector);
 
-        $this->assertEquals($count, count($columns));
+        $this->assertEquals($count, \count($columns));
     }
 
     /**
-     * Checks that the specified table contains the specified number of rows in its body
+     * Checks that the specified table contains the specified number of rows in its body.
      */
     #[Then('(I )should see :count rows in the :index :table table')]
-    public function iShouldSeeRowsInTheNthTable($count, $index, $table)
+    public function iShouldSeeRowsInTheNthTable($count, $index, $table): void
     {
         $actual = $this->countElements('tbody tr', $index, $table);
         $this->assertEquals($count, $actual);
     }
 
     /**
-     * Checks that the specified table contains the specified number of rows in its body
+     * Checks that the specified table contains the specified number of rows in its body.
      */
     #[Then('(I )should see :count row(s) in the :table table')]
-    public function iShouldSeeRowsInTheTable($count, $table)
+    public function iShouldSeeRowsInTheTable($count, $table): void
     {
         $this->iShouldSeeRowsInTheNthTable($count, 1, $table);
     }
 
     /**
-     * Checks that the data of the specified row matches the given schema
+     * Checks that the data of the specified row matches the given schema.
      */
     #[Then('the data in the :index row of the :table table should match:')]
-    public function theDataOfTheRowShouldMatch($index, $table, TableNode $text)
+    public function theDataOfTheRowShouldMatch($index, $table, TableNode $text): void
     {
         $rowsSelector = "$table tbody tr";
         $rows = $this->getSession()->getPage()->findAll('css', $rowsSelector);
@@ -69,8 +71,8 @@ class TableContext extends BaseContext
             throw new \Exception("The row $index was not found in the '$table' table");
         }
 
-        $cells = (array)$rows[$index - 1]->findAll('css', 'td');
-        $cells = array_merge((array)$rows[$index - 1]->findAll('css', 'th'), $cells);
+        $cells = (array) $rows[$index - 1]->findAll('css', 'td');
+        $cells = array_merge((array) $rows[$index - 1]->findAll('css', 'th'), $cells);
 
         $hash = current($text->getHash());
 
@@ -84,11 +86,12 @@ class TableContext extends BaseContext
     }
 
     /**
-     * Checks that the specified cell (column/row) of the table's body contains the specified text
+     * Checks that the specified cell (column/row) of the table's body contains the specified text.
+     *
      * @throws \Exception
      */
     #[Then('the :colIndex column of the :rowIndex row in the :table table should contain :text')]
-    public function theStColumnOfTheStRowInTheTableShouldContain($colIndex, $rowIndex, $table, $text)
+    public function theStColumnOfTheStRowInTheTableShouldContain($colIndex, $rowIndex, $table, $text): void
     {
         $rowSelector = "$table tbody tr";
         $rows = $this->getSession()->getPage()->findAll('css', $rowSelector);
