@@ -9,17 +9,17 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class JsonInspector
 {
-    private $evaluationMode;
+    private mixed $evaluationMode;
 
-    private $accessor;
+    private PropertyAccessor $accessor;
 
-    public function __construct($evaluationMode)
+    public function __construct(mixed $evaluationMode)
     {
         $this->evaluationMode = $evaluationMode;
-        $this->accessor = new PropertyAccessor(false, true);
+        $this->accessor = new PropertyAccessor();
     }
 
-    public function evaluate(Json $json, $expression)
+    public function evaluate(Json $json, string $expression)
     {
         if ('javascript' === $this->evaluationMode) {
             $expression = str_replace('->', '.', $expression);
@@ -32,7 +32,7 @@ class JsonInspector
         }
     }
 
-    public function validate(Json $json, JsonSchema $schema)
+    public function validate(Json $json, JsonSchema $schema): bool
     {
         $validator = new Validator();
 

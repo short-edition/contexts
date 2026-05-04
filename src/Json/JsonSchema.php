@@ -32,7 +32,7 @@ class JsonSchema extends Json
     /**
      * @throws \Exception
      */
-    public function validate(Json $json, Validator $validator): true
+    public function validate(Json $json, Validator $validator): bool
     {
         $content = $json->content;
         $validator->validate($content, $this->content);

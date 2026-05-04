@@ -246,7 +246,7 @@ class JsonContext extends BaseContext
      * Checks, that given JSON node does not exist.
      */
     #[Then('the JSON node :name should not exist')]
-    public function theJsonNodeShouldNotExist($name)
+    public function theJsonNodeShouldNotExist($name): bool
     {
         return null === $this->theJsonNodeShouldExist($name);
     }
@@ -343,7 +343,7 @@ class JsonContext extends BaseContext
         $this->not(fn () => $this->theJsonShouldBeValidAccordingToTheSwaggerSchema($dumpPath, $schemaName), 'JSON Schema matches but it should not');
     }
 
-    protected function getJson()
+    protected function getJson(): Json
     {
         return new Json($this->httpCallResultPool->result->value);
     }
