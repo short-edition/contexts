@@ -83,7 +83,7 @@ class RestContext extends BaseContext
     #[Then('the response should be equal to:')]
     public function theResponseShouldBeEqualTo(PyStringNode $expected): void
     {
-        $expected = str_replace('\\"', '"', $expected);
+        $expected = str_replace('\\"', '"', $expected->getRaw());
         $actual = $this->request->getContent();
         $message = "Actual response is '$actual', but expected '$expected'";
         $this->assertEquals($expected, $actual, $message);
