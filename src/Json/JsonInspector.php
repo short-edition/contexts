@@ -19,7 +19,7 @@ class JsonInspector
         $this->accessor = new PropertyAccessor();
     }
 
-    public function evaluate(Json $json, string $expression)
+    public function evaluate(Json $json, mixed $expression)
     {
         if ('javascript' === $this->evaluationMode) {
             $expression = str_replace('->', '.', $expression);
