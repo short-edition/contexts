@@ -26,7 +26,7 @@ trait Asserter
         }
     }
 
-    protected function assertContains($expected, $actual, $message = null): void
+    protected function assertContains(string $expected, string $actual, ?string $message = null): void
     {
         $regex = '/'.preg_quote($expected, '/').'/ui';
 
@@ -36,7 +36,7 @@ trait Asserter
         );
     }
 
-    protected function assertNotContains($expected, $actual, $message = null): void
+    protected function assertNotContains(string $expected, string $actual, ?string $message = null): void
     {
         $message = $message ?: "The string '$expected' was found.";
 

@@ -193,7 +193,7 @@ class JsonContext extends BaseContext
 
         $actual = $this->inspector->evaluate($json, $node);
 
-        $this->assertContains($text, (string) $actual);
+        $this->assertContains((string) $text, (string) $actual);
     }
 
     /**
