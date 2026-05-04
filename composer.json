@@ -10,7 +10,6 @@
         "behat/behat": "4.x-dev as 3.31.0",
         "short-edition/mink-extension": "dev-bugfix",
         "justinrainbow/json-schema": "^6.8",
-        "symfony/property-access": "^8.0",
         "symfony/http-foundation": "^8.0",
         "symfony/dom-crawler": "^8.0"
     },

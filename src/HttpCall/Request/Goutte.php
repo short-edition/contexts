@@ -10,9 +10,9 @@ class Goutte extends BrowserKit
      *
      * @var array
      */
-    private $requestHeaders = [];
+    private array $requestHeaders = [];
 
-    public function send($method, $url, $parameters = [], $files = [], $content = null, $headers = [])
+    public function send($method, $url, $parameters = [], $files = [], $content = null, $headers = []): \Behat\Mink\Element\DocumentElement
     {
         $page = parent::send($method, $url, $parameters, $files, $content, array_merge($headers, $this->requestHeaders));
         $this->resetHttpHeaders();
@@ -20,7 +20,7 @@ class Goutte extends BrowserKit
         return $page;
     }
 
-    public function setHttpHeader($name, $value)
+    public function setHttpHeader($name, $value): void
     {
         /* taken from Behat\Mink\Driver\BrowserKitDriver::setRequestHeader */
         $contentHeaders = array('CONTENT_LENGTH' => true, 'CONTENT_MD5' => true, 'CONTENT_TYPE' => true);
@@ -35,7 +35,7 @@ class Goutte extends BrowserKit
         $this->requestHeaders[$name] = $value;
     }
 
-    protected function resetHttpHeaders()
+    protected function resetHttpHeaders(): void
     {
         $this->requestHeaders = [];
     }
