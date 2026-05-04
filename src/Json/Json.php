@@ -33,7 +33,11 @@ class Json
             return $this->content;
         }
 
-        return $accessor->getValue($this->content, $expression);
+        if ($accessor->isReadable($this->content, $expression)) {
+            return $accessor->getValue($this->content, $expression);
+        }
+
+        return '';
     }
 
     public function encode($pretty = true): false|string
