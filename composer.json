@@ -8,8 +8,8 @@
     "require": {
         "php": ">=8.5",
         "behat/behat": "4.x-dev as 3.31.0",
-        "friends-of-behat/symfony-extension": "dev-master",
         "justinrainbow/json-schema": "^6.8",
+        "short-edition/mink-extension": "dev-bugfix",
         "symfony/property-access": "^8.0",
         "symfony/http-foundation": "^8.0",
         "symfony/dom-crawler": "^8.0"
