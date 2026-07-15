@@ -7,9 +7,9 @@
 
     "require": {
         "php": ">=8.5",
-        "behat/behat": "4.x-dev as 3.31.0",
+        "behat/behat": "4.x-dev",
+        "friends-of-behat/mink-extension": "dev-master",
         "justinrainbow/json-schema": "^6.8",
-        "short-edition/mink-extension": "dev-bugfix",
         "symfony/property-access": "^8.0",
         "symfony/http-foundation": "^8.0",
         "symfony/dom-crawler": "^8.0"
@@ -19,7 +19,7 @@
         "guzzlehttp/guzzle": "^7|^8",
         "behat/mink-selenium2-driver": "^1.7",
         "atoum/atoum": "^4.4",
-        "friendsofphp/php-cs-fixer": "3.95.1"
+        "friendsofphp/php-cs-fixer": "^3.95"
     },
 
     "autoload": {
